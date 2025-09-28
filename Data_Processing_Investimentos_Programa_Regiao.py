@@ -82,7 +82,7 @@ for x in range(len(folder_files)):
     # -------------------------- #        
     else:        
         dataset = dataset.assign(cod_program = '', 
-                                 program = '',                                                                 # Add empty columnprojeto
+                                 program = '',                                                                 # Add empty column program
                                  periodo = folder_files[x][0:8],
                                  tipo = folder_files[x][9:14],
                                  ano = folder_files[x][4:8],
@@ -123,41 +123,63 @@ dataset_full['%pago'] = pd.to_numeric(dataset_full['%pago'])/100
 
 
 
+
+
 # ======================= #
 # === Storing Results === #
 # ======================= #
 # Obs: when using with statement there is no need to save the sheet after opening it for formating
-if info_desired == 'p':
+if info_desired == 'p':       
+    
+    # Vertical dataset adjustment
+    dataset_full = dataset_full.melt(
+        id_vars = ['periodo', 'ano', 'mes', 'tipo', 'cod_program', 'program'],
+        value_vars = ['lei', 'lei+cred', 'empenhado', 'pago', '%emp', '%pago'],
+        var_name = 'categoria',
+        value_name = 'valor'
+        )
+    
     with pd.ExcelWriter(path = 'investimentos_siof_ceara_programa.xlsx', engine='xlsxwriter') as writer:
         dataset_full.to_excel(excel_writer = writer, sheet_name = 'investimentos_programa', index = False)
 
-        # Just Formatting the Excel Sheet
-        workbook = writer.book
-        worksheet = writer.sheets['investimentos_programa']
-        money_formatting = workbook.add_format({'num_format':'R$#,##0'})
-        perc_formatting = workbook.add_format({'num_format':'0.0%'})
-        worksheet.set_column('G:J', 15, money_formatting)
-        worksheet.set_column('K:L', 15, perc_formatting)
-        worksheet.set_column('A:F', 15)
+        # Just Formatting the Excel Sheet (not needed in case of vertical adjustment)
+        #workbook = writer.book
+        #worksheet = writer.sheets['investimentos_programa']
+        #money_formatting = workbook.add_format({'num_format':'R$#,##0'})
+        #perc_formatting = workbook.add_format({'num_format':'0.0%'})
+        #worksheet.set_column('G:J', 15, money_formatting)
+        #worksheet.set_column('K:L', 15, perc_formatting)
+        #worksheet.set_column('A:F', 15)
     
     # Full Cleasing
-    del(dataset, folder_files, i, info_desired, money_formatting, n_char, perc_formatting, remove_rows, workbook, worksheet, writer, x)
+    del(dataset, folder_files, i, info_desired, n_char, remove_rows, writer, x)#, money_formatting, perc_formatting, workbook, worksheet)
 
 else:
+    
+    # Vertical dataset adjustment
+    dataset_full = dataset_full.melt(
+        id_vars = ['periodo', 'ano', 'mes', 'tipo', 'cod_regiao', 'regiao', 'cod_program', 'program'],
+        value_vars = ['lei', 'lei+cred', 'empenhado', 'pago', '%emp', '%pago'],
+        var_name = 'categoria',
+        value_name = 'valor'
+        )
+    
+    
+    
     with pd.ExcelWriter(path = 'investimentos_siof_ceara_programa_regiao.xlsx', engine='xlsxwriter') as writer:
         dataset_full.to_excel(excel_writer = writer, sheet_name = 'investimentos_programa_regiao', index = False)
 
-        # Just Formatting the Excel Sheet
-        workbook = writer.book
-        worksheet = writer.sheets['investimentos_programa_regiao']
-        money_formatting = workbook.add_format({'num_format':'R$#,##0'})
-        perc_formatting = workbook.add_format({'num_format':'0.0%'})
-        worksheet.set_column('I:L', 15, money_formatting)
-        worksheet.set_column('M:N', 15, perc_formatting)
-        worksheet.set_column('A:F', 15)
+        # Just Formatting the Excel Sheet (not needed in case of vertical adjustment)
+        #workbook = writer.book
+        #worksheet = writer.sheets['investimentos_programa_regiao']
+        #money_formatting = workbook.add_format({'num_format':'R$#,##0'})
+        #perc_formatting = workbook.add_format({'num_format':'0.0%'})
+        #worksheet.set_column('I:L', 15, money_formatting)
+        #worksheet.set_column('M:N', 15, perc_formatting)
+        #worksheet.set_column('A:F', 15)
     
     # Full Cleasing
-    del(dataset, folder_files, i, info_desired, money_formatting, n_char, perc_formatting, remove_rows, workbook, worksheet, writer, x, last_program, cod_last_program)
+    del(dataset, folder_files, i, info_desired, n_char, remove_rows, writer, x, last_program, cod_last_program)#, money_formatting, perc_formatting, workbook, worksheet)
 
         
 
