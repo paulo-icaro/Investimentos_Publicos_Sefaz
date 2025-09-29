@@ -131,11 +131,21 @@ for x in range(len(folder_files)):
 # === Adjustments for cumulative data === #
 # ======================================= #
 
-# --------------- #
-# --- Sorting --- #
-# --------------- #
-dataset_full = dataset_full.sort_values(by = ['cod_program', 'regiao', 'tipo', 'ano', 'mes'])
+# --- Subseting --- #
+dataset_full = dataset_full[dataset_full.ano != '2012']
 
+# --- Sorting --- #
+dataset_full = dataset_full.sort_values(by = ['regiao', 'cod_program', 'tipo', 'ano', 'mes'])
+
+# --- Cumulative data adjustment --- #
+dataset_full = dataset_full.assign(empenhado_ajustado = '', pago_ajustado = '')
+dataset_full['empenhado_ajustado'] = dataset_full['empenhado'] - dataset_full['empenhado'].shift(1)
+
+for i in range(len(dataset_full)):
+    if dataset_full['mes'].iloc[i] == "01":
+        dataset_full['empenhado_ajustado'].iloc[i] = dataset_full['empenhado'].iloc[i]
+    '''else:
+        dataset_full['empenhado_ajustado'].iloc[i] = dataset_full['empenhado'].iloc[i] - dataset_full['empenhado'].iloc[i-1]'''
 
 
 
