@@ -8,6 +8,7 @@
 # === Libraries === #
 # ================= #
 import pandas as pd
+import numpy as np
 import os
 #from openpyxl import load_workbook
 
@@ -17,17 +18,21 @@ import os
 # ================================== #
 info_desired = ''
 
-while info_desired not in {'p', 'pr', 'rp'}:
-    info_desired = input('Como você deseja a base de dados ? Use (P) para Programa e (PR) para Programa e Região: ').strip().lower()
+while info_desired not in {'p', 'r', 'pr', 'rp'}:
+    info_desired = input('Como você deseja a base de dados ? Use (P) para Programa, (R) para Região e (PR) para Programa e Região: ').strip().lower()
     
-    if info_desired not in {'p', 'pr', 'rp'}: 
+    if info_desired not in {'p', 'r', 'pr', 'rp'}: 
         print('Opção inválida !')
     elif info_desired == 'p':
-        print('Tratando as informações apenas por Programa ...')
+        print('Tratando as informações por Programa ...')
+        break
+    elif info_desired == 'r':
+        print('Tratando as informações por Região ...')
         break
     else:
-        print('Tratando as informações por Programa e Região...')
+        print('Tratando as informações por Programa e Região ...')
         break
+
 
 
 # ===================== #
@@ -35,6 +40,7 @@ while info_desired not in {'p', 'pr', 'rp'}:
 # ===================== #
 folder_files = os.listdir('Dataset/Investimentos_Programa_Regiao/')
 dataset_full = pd.DataFrame()
+
 
 
 # ======================= #
@@ -47,7 +53,7 @@ for x in range(len(folder_files)):
                           usecols= 'C, F, K, N',
                           names = ['codigo', 'descricao', 'empenhado', 'pago'],
                           dtype = {'codigo':str})
-    dataset = dataset.dropna()                                                                              # Remove na's
+    dataset = dataset.dropna()                                                                             # Remove na's
     
     
     # --------------- #
@@ -59,86 +65,122 @@ for x in range(len(folder_files)):
                                  ano = folder_files[x][4:8],
                                  mes = folder_files[x][0:3])    
         
+        # Replacements
         replacements = {'JAN':'01', 'FEV':'02', 'MAR':'03', 'ABR':'04', 'MAI':'05', 'JUN':'06', 'JUL':'07', 'AGO':'08', 'SET':'09', 'OUT':'10', 'NOV':'11', 'DEZ':'12'}
         for old, new in replacements.items():
             dataset['mes'] = dataset['mes'].replace(old,new)
-            
         
-        # Identifying Program rows
-        for i in range(len(dataset)):
-            n_char = len(str(dataset['codigo'].iloc[i]))
-        
-            if n_char == 2:
-                dataset['descricao'].iloc[i] = ''
+        # Identifying Region rows
+        program_flag = dataset['codigo'].str.len() == 2            
         
         # Removing cases where column descricao has 2 characters
-        remove_rows = dataset['descricao'] == ''
-        dataset = dataset[~remove_rows]
+        program_flag = dataset['codigo'].str.len() == 2
+        dataset = dataset[~program_flag]
         
         # Reordering and renaming
         dataset = dataset.reindex(columns = ['periodo', 'ano', 'mes', 'tipo', 'codigo', 'descricao', 'empenhado', 'pago'])
-        dataset.rename(columns = {'descricao':'program', 'codigo':'cod_program'}, inplace = True)
+        dataset.rename(columns = {'descricao':'programa', 'codigo':'cod_programa'}, inplace = True)
         
-    
-    
+        
+        
+    # -------------- #
+    # --- Region --- #
+    # -------------- #
+    if info_desired == 'r':
+        dataset = dataset.assign(periodo = folder_files[x][0:8],
+                                 tipo = folder_files[x][9:14],
+                                 ano = folder_files[x][4:8],
+                                 mes = folder_files[x][0:3])    
+        
+        # Replacements
+        replacements = {'JAN':'01', 'FEV':'02', 'MAR':'03', 'ABR':'04', 'MAI':'05', 'JUN':'06', 'JUL':'07', 'AGO':'08', 'SET':'09', 'OUT':'10', 'NOV':'11', 'DEZ':'12'}
+        for old, new in replacements.items():
+            dataset['mes'] = dataset['mes'].replace(old,new)        
+        
+        # Identifying Program rows
+        region_flag = dataset['codigo'].str.len() == 3        
+        
+        # Removing cases where column descricao has 3 characters        
+        dataset = dataset[~region_flag]
+        
+        # Reordering and renaming
+        dataset = dataset.reindex(columns = ['periodo', 'ano', 'mes', 'tipo', 'codigo', 'descricao', 'empenhado', 'pago'])
+        dataset.rename(columns = {'descricao':'regiao', 'codigo':'cod_regiao'}, inplace = True)
+
+        
+        
     # -------------------------- #
     # --- Program and Region --- #
     # -------------------------- #        
     else:        
-        dataset = dataset.assign(cod_program = '', 
-                                 program = '',                                                                 # Add empty column program
+        dataset = dataset.assign(cod_programa = np.nan, 
+                                 programa = np.nan,                                                                 # Add empty column programa
                                  periodo = folder_files[x][0:8],
                                  tipo = folder_files[x][9:14],
                                  ano = folder_files[x][4:8],
                                  mes = folder_files[x][0:3])
         
+        # Replacements
         replacements = {'JAN':'01', 'FEV':'02', 'MAR':'03', 'ABR':'04', 'MAI':'05', 'JUN':'06', 'JUL':'07', 'AGO':'08', 'SET':'09', 'OUT':'10', 'NOV':'11', 'DEZ':'12'}
         for old, new in replacements.items():
-            dataset['mes'] = dataset['mes'].replace(old,new)
-            
+            dataset['mes'] = dataset['mes'].replace(old,new)            
     
         # Identifying Program rows
-        for i in range(len(dataset)):
-            n_char = len(str(dataset['codigo'].iloc[i]))
-    
-            if n_char == 3:
-                dataset['program'].iloc[i] = ''
-                cod_last_program = dataset['codigo'].iloc[i]
-                last_program = dataset['descricao'].iloc[i]
-            else:
-                dataset['cod_program'].iloc[i] = cod_last_program
-                dataset['program'].iloc[i] = last_program
+        program_flag = dataset['codigo'].str.len() == 3        
+        
+        # Filling Columns
+        dataset.loc[program_flag, 'cod_programa'] = dataset['codigo']
+        dataset.loc[program_flag, 'programa'] = dataset['descricao']
+        dataset[['cod_programa','programa']] = dataset[['cod_programa','programa']].ffill()        
             
         # Removing cases where column codigo has 3 characters
-        remove_rows = dataset['program'] == ''
-        dataset = dataset[~remove_rows]
+        dataset = dataset[~program_flag]
     
         # Reordering and renaming
-        dataset = dataset.reindex(columns = ['periodo', 'ano', 'mes', 'tipo', 'codigo', 'descricao', 'cod_program', 'program', 'empenhado', 'pago'])
+        dataset = dataset.reindex(columns = ['periodo', 'ano', 'mes', 'tipo', 'codigo', 'descricao', 'cod_programa', 'programa', 'empenhado', 'pago'])
         dataset.rename(columns = {'descricao':'regiao', 'codigo':'cod_regiao'}, inplace = True)
         
 
-    # Pile datasets
+    # ------------------------- #    
+    # --- Stacking datasets --- #
+    # ------------------------- #
     if x == 0:    
         dataset_full = dataset
     else:
-        dataset_full = pd.concat([dataset_full, dataset])
-        
-        
+        dataset_full = pd.concat([dataset_full, dataset])   
+ 
     
-    
+ 
 # ======================================= #
 # === Adjustments for cumulative data === #
 # ======================================= #
 
-# --------------- #
 # --- Sorting --- #
-# --------------- #
-dataset_full = dataset_full.sort_values(by = ['cod_program', 'regiao', 'tipo', 'ano', 'mes'])
+if info_desired == 'p':
+    dataset_full = dataset_full.sort_values(by = ['cod_programa', 'tipo', 'ano', 'mes']).reset_index(drop = True)
+elif info_desired == 'r':
+    dataset_full = dataset_full.sort_values(by = ['cod_regiao', 'tipo', 'ano', 'mes']).reset_index(drop = True)
+else:
+    dataset_full = dataset_full.sort_values(by = ['tipo', 'regiao', 'cod_programa','ano', 'mes']).reset_index(drop = True)
 
 
+# --- Cumulative data adjustment --- #
+dataset_full['empenhado_mensal'] = dataset_full['empenhado'] - dataset_full['empenhado'].shift(1)     # Inserting adjusted values
+dataset_full['pago_mensal'] = dataset_full['pago'] - dataset_full['pago'].shift(1)                    # Inserting adjusted values
 
 
+# --- Loop for adjusting date truncated values --- #
+for i in range(len(dataset_full)):  
+    if i == 0:
+        dataset_full.loc[0, 'empenhado_mensal'] = dataset_full.loc[0, 'empenhado']
+        dataset_full.loc[0, 'pago_mensal'] = dataset_full.loc[0, 'pago']
+    if i != 0 and int(dataset_full.loc[i, 'mes']) - int(dataset_full.loc[i-1, 'mes']) != 1:
+        dataset_full.loc[i, 'empenhado_mensal'] = dataset_full.loc[i, 'empenhado']
+        dataset_full.loc[i, 'pago_mensal'] = dataset_full.loc[i, 'pago']
+    
+    
+# --- Renaming columns --- #
+dataset_full.rename(columns = {'empenhado':'empenhado_acumulado', 'pago':'pago_acumulado'}, inplace = True)
 
 
 
@@ -148,35 +190,63 @@ dataset_full = dataset_full.sort_values(by = ['cod_program', 'regiao', 'tipo', '
 # Obs: when using with statement there is no need to save the sheet after opening it for formating
 if info_desired == 'p':       
     
-    # Vertical dataset adjustment
+    # --- Vertical dataset adjustment --- #
     dataset_full = dataset_full.melt(
-        id_vars = ['periodo', 'ano', 'mes', 'tipo', 'cod_program', 'program'],
-        value_vars = ['lei', 'lei+cred', 'empenhado', 'pago', '%emp', '%pago'],
+        id_vars = ['periodo', 'ano', 'mes', 'tipo', 'cod_programa', 'programa'],
+        value_vars = ['empenhado_acumulado', 'pago_acumulado', 'empenhado_mensal', 'pago_mensal'],
         var_name = 'categoria',
         value_name = 'valor'
         )
     
+    # --- Storing --- #
     with pd.ExcelWriter(path = 'investimentos_siof_ceara_programa.xlsx', engine='xlsxwriter') as writer:
         dataset_full.to_excel(excel_writer = writer, sheet_name = 'investimentos_programa', index = False)
 
         # Just Formatting the Excel Sheet (not needed in case of vertical adjustment)
-        #workbook = writer.book
-        #worksheet = writer.sheets['investimentos_programa']
-        #money_formatting = workbook.add_format({'num_format':'R$#,##0'})
-        #perc_formatting = workbook.add_format({'num_format':'0.0%'})
-        #worksheet.set_column('G:J', 15, money_formatting)
-        #worksheet.set_column('K:L', 15, perc_formatting)
-        #worksheet.set_column('A:F', 15)
+        '''workbook = writer.book
+        worksheet = writer.sheets['investimentos_programa']
+        money_formatting = workbook.add_format({'num_format':'R$#,##0'})
+        perc_formatting = workbook.add_format({'num_format':'0.0%'})
+        worksheet.set_column('G:J', 15, money_formatting)
+        worksheet.set_column('K:L', 15, perc_formatting)
+        worksheet.set_column('A:F', 15)'''
     
     # Full Cleasing
-    del(dataset, folder_files, i, info_desired, n_char, remove_rows, writer, x)#, money_formatting, perc_formatting, workbook, worksheet)
+    del(dataset, folder_files, i, info_desired, writer, x, new, old, replacements, program_flag)#, money_formatting, perc_formatting, workbook, worksheet)
+    
+elif info_desired == 'r':       
+    
+    # --- Vertical dataset adjustment --- #
+    dataset_full = dataset_full.melt(
+        id_vars = ['periodo', 'ano', 'mes', 'tipo', 'cod_regiao', 'regiao'],
+        value_vars = ['empenhado_acumulado', 'pago_acumulado', 'empenhado_mensal', 'pago_mensal'],
+        var_name = 'categoria',
+        value_name = 'valor'
+        )
+    
+    # --- Storing --- #
+    with pd.ExcelWriter(path = 'investimentos_siof_ceara_regiao.xlsx', engine='xlsxwriter') as writer:
+        dataset_full.to_excel(excel_writer = writer, sheet_name = 'investimentos_regiao', index = False)
+
+        # Just Formatting the Excel Sheet (not needed in case of vertical adjustment)
+        '''workbook = writer.book
+        worksheet = writer.sheets['investimentos_regiao']
+        money_formatting = workbook.add_format({'num_format':'R$#,##0'})
+        perc_formatting = workbook.add_format({'num_format':'0.0%'})
+        worksheet.set_column('G:J', 15, money_formatting)
+        worksheet.set_column('K:L', 15, perc_formatting)
+        worksheet.set_column('A:F', 15)'''
+    
+    # Full Cleasing
+    del(dataset, folder_files, i, info_desired, writer, x, new, old, replacements, region_flag)#, money_formatting, perc_formatting, workbook, worksheet)
+
 
 else:
     
     # Vertical dataset adjustment
     dataset_full = dataset_full.melt(
-        id_vars = ['periodo', 'ano', 'mes', 'tipo', 'cod_regiao', 'regiao', 'cod_program', 'program'],
-        value_vars = ['lei', 'lei+cred', 'empenhado', 'pago', '%emp', '%pago'],
+        id_vars = ['periodo', 'ano', 'mes', 'tipo', 'cod_regiao', 'regiao', 'cod_programa', 'programa'],
+        value_vars = ['empenhado_acumulado', 'pago_acumulado', 'empenhado_mensal', 'pago_mensal'],
         var_name = 'categoria',
         value_name = 'valor'
         )
@@ -196,10 +266,4 @@ else:
         worksheet.set_column('A:F', 15)'''
     
     # Full Cleasing
-    del(dataset, folder_files, i, info_desired, n_char, remove_rows, writer, x, last_program, cod_last_program)#, money_formatting, perc_formatting, workbook, worksheet)
-
-        
-
-        
-'''for x in range(len(folder_files)):
-    print(x)'''
+    del(dataset, folder_files, i, info_desired, writer, x, last_program, cod_last_program, new, old, replacements, program_flag)#, money_formatting, perc_formatting, workbook, worksheet)
