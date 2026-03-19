@@ -112,5 +112,5 @@ with pd.ExcelWriter(path = 'investimentos_siof_ceara_funcao.xlsx', engine = 'xls
     worksheet.set_column('K:L', 15, perc_formatting)
 
 
-# --- Full cleasing --- #
+# --- Full Cleasing --- #
 del(dataset, folder_files, money_formatting, perc_formatting, workbook, worksheet, writer, x)
