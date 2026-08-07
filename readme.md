@@ -36,7 +36,7 @@ seguindo a seguinte regra[^1]:
 
 </p>
 
-$$invest_t = invest\_acum_t - invest\_acum_t-1    \qquad(t \neq 1)$$
+$$invest_t = invest\_acum_t - invest\_acum_{t-1}    \qquad(t \neq 1)$$
 
 <p>
 
@@ -55,9 +55,10 @@ série de **Investimentos por Função**, a série tem início em 2015.
 ## Rotinas
 
       As rotinas de tratamento foram desenvolvidas na linguagem Python e
-estão disponíveis no link abaixo:
+estão detalhadas no link abaixo:
 
-- **data_processing_investimentos_funcao**: investimentos por função;
+- [**data_processing_investimentos_funcao**](https://github.com/paulo-icaro/Investimentos_Publicos_Sefaz/blob/main/data_processing_investimentos_funcao.md):
+  investimentos por função;
 - **data_processing_investimentos_programa_regiao**: investimentos por
   programa e região.
 
