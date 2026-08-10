@@ -51,8 +51,7 @@ Os tópicos a seguir detalham cada etapa da rotina.
       Importadas as devidas bibliotecas, os arquivos que serão
 trabalhados são devidamente mapeados por meio da função **listdir** da
 biblioteca **os**. Nessa etapa o usuário será questionado sobre como
-deseja a estrutura final dos dados: Programa, Região e/ou Programa e
-Região.
+deseja a estrutura final dos dados: Programa, Região ou Programa/Região.
 
 </p>
 
@@ -139,6 +138,20 @@ um procedimento é adotado:
 
 - **Investimentos por Região**: Similar ao caso anterior, agora todas as
   linhas que representam programa é que são identificadas e removidas.
+
+- **Programa/Região**: Aqui o ajuste é um pouco mais refinado.
+  Inicialmente as linhas que representam programa são identificadas. Os
+  campos **cod_programa** e **programa** são alimentados,
+  respectivamente com as informações dos campos **Código** e
+  **Descrição** apenas nas linhas que foram identificadas. Em seguinda,
+  utilizando a função
+  [**ffill**](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.ffill.html),
+  as colunas **cod_programa** e **programa** de todas as linhas que por
+  eliminação representam região, passam a receber o valor imediatamente
+  anterior. Por fim, as linhas que representam programa são eliminadas.
+  A imagem a seguir ajuda a entender o procedimento adotado:
+
+<img src = 'img/tratamento_investimentos_programa_regiao.png'>
 
 Primeiramente, são identificas e filtradas somentes as linhas referente
 a cujo código corresponde a Função. Dado a estrutura de looping, a
