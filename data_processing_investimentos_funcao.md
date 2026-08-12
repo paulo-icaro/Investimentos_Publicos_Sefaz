@@ -1,5 +1,5 @@
-# Processamento de Dados - Investimentos Públicos por Função
-
+# Processamento de Dados - Investimentos Públicos por Função (Sefaz-CE)
+Paulo Icaro
 
 ## Objetivo e Estrutura dos Dados
 
@@ -21,19 +21,17 @@ planilha contém oito campos. Destes, as colunas interesse são:
 - Empenhado
 - Pago
 
-No campo Código, os investimentos estão classificados em Função,
+      No campo Código, os investimentos estão classificados em Função,
 Subfunção, Programa e Projeto/Atividade. Para fins da pesquisa, apenas a
-primeira classificação interessa.
-
+primeira classificação interessa.  
       Levando em conta os pontos mencionados e que os dados são
 cumulativos, o objetivo dessa rotina é coletar as informações referente
 a Função considerando somente os valores de investimentos Empenhado e
-Pago.
+Pago. Os tópicos a seguir detalham cada etapa da rotina.
 
-<img src = 'img/investimentos_funcao.jpeg'>
-
-Os tópicos a seguir detalham cada etapa da rotina.
 </p>
+
+<img src="img/investimentos_funcao.jpeg" style="width:100.0%" />
 
 ## Bibliotecas e Arquivos na Pasta
 
@@ -41,9 +39,10 @@ Os tópicos a seguir detalham cada etapa da rotina.
 
       Para executação dessa rotina, duas bibliotecas foram utilizadas:
 
--   [pandas](https://pandas.pydata.org/docs/index.html): bilbioteca para manipulação, limpeza e análise de dados.
-
--   [os](https://docs.python.org/3/library/os.html): biblioteca padrão do python que permite interagir com o sistema operacional.
+- [pandas](https://pandas.pydata.org/docs/index.html): bilbioteca para
+  manipulação, limpeza e análise de dados.
+- [os](https://docs.python.org/3/library/os.html): biblioteca padrão do
+  python que permite interagir com o sistema operacional.
 
       Importadas as devidas bibliotecas, os arquivos que serão
 trabalhados são devidamente mapeados por meio da função **listdir** da
@@ -217,7 +216,8 @@ anterior. Nesse caso, a rotina entende que o valor mensal é o mesmo
 valor acumulado. Nos demais cenários a regra padrão é adotada. O
 infográfico a seguir ajuda a compreender a regra adotada.
 
-<img src = 'img/regra_calculo_investimentos_acumulados.png'>
+<img src="img/regra_calculo_investimentos_acumulados.png"
+style="width:100.0%" />
 </p>
 
 ``` python
@@ -232,7 +232,7 @@ dataset_full = dataset_full.sort_values(by = ['funcao', 'tipo', 'ano', 'mes']).r
 dataset_full['empenhado_mensal'] = dataset_full['empenhado'] - dataset_full['empenhado'].shift(1)       # Inserting adjusted values
 dataset_full['pago_mensal'] = dataset_full['pago'] - dataset_full['pago'].shift(1)                      # Inserting adjusted values
 
-# --- Looping de ajuste para valores truncados --- #
+# --- Looping de ajuste para valores com datas truncadas --- #
 for i in range(len(dataset_full)):
     if i == 0:
         dataset_full.loc[0, 'empenhado_mensal'] = dataset_full.loc[0, 'empenhado']
@@ -243,6 +243,8 @@ for i in range(len(dataset_full)):
 
 # --- Renomeando colunas --- #
 dataset_full.rename(columns = {'empenhado':'empenhado_acumulado', 'pago':'pago_acumulado'}, inplace = True)
+
+# --- Prints --- #
 print(dataset_full.head(10))
 ```
 
@@ -333,9 +335,9 @@ with pd.ExcelWriter(path = 'investimentos_siof_ceara_funcao.xlsx', engine = 'xls
     workbook = writer.book
     worksheet = writer.sheets['investimentos_funcao']
     money_formatting = workbook.add_format({'num_format':'R$#,##0'})
-    perc_formatting = workbook.add_format({'num_format':'0.0%'})
-    worksheet.set_column('G:J', 15, money_formatting)    
-    worksheet.set_column('K:L', 15, perc_formatting)
+    #perc_formatting = workbook.add_format({'num_format':'0.0%'})
+    worksheet.set_column('H:H', 15, money_formatting)    
+    #worksheet.set_column('K:L', 15, perc_formatting)
 
 
 # --- Limpeza --- #
