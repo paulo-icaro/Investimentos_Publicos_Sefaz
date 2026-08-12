@@ -1,12 +1,12 @@
 # Processamento dos dados de Investimentos Públicos no Estado do Ceará
-
+Paulo Icaro
 
 ## Propósito
 
 <p>
 
-      Este repositório[^1] contém as rotinas responsáveis por realizar
-os devidos tratamentos nos dados de investimentos públicos no Estado do
+      Este repositório[1] contém as rotinas responsáveis por realizar os
+devidos tratamentos nos dados de investimentos públicos no Estado do
 Ceará necessários ao projeto. Em termos práticos, os dados de
 investimentos são de frequência mensal e de caráter cumulativo. Dada
 essa estrutura, se faz necessário tomar a variação entre meses de modo a
@@ -32,11 +32,11 @@ por Função**, juntam-se aos tipos mencionados os Investimentos
       Como mencionado, os dados possuem frequência mensal e são de
 caráter cumulativo. Portanto, para se chegar ao investimento efetivo de
 cada período é necessário tomar a diferença entre cada um dos intervalos
-seguindo a seguinte regra[^2]:
+seguindo a seguinte regra[2]:
 
 </p>
 
-$$invest_t = invest\_acum_t - invest\_acum_{t-1}    \qquad(t \neq 1)$$
+*i**n**v**e**s**t*<sub>*t*</sub> = *i**n**v**e**s**t*\_*a**c**u**m*<sub>*t*</sub> − *i**n**v**e**s**t*\_*a**c**u**m*<sub>*t* − 1</sub>   (*t* ≠ 1)
 
 <p>
 
@@ -62,16 +62,16 @@ estão detalhadas no link abaixo:
 - [**data_processing_investimentos_programa_regiao**](https://github.com/paulo-icaro/Investimentos_Publicos_Sefaz/blob/main/notas/data_processing_investimentos_programa_regiao.md):
   investimentos por programa e região.
 
-[^1]: É importante ressaltar ambas rotinas foram geradas usando a
-    interface [Spyder](https://www.spyder-ide.org/) que possui um
-    *spyproject* associado que facilita a execução e leitura dos
-    arquivos contidos em planilha. Em razão do tamanho dessas planilhas,
-    tais dados não estão disponibilizados neste repositório. Contudo,
-    podem ser acessados na página do
-    [SIOF](https://planejamento.seplag.ce.gov.br/siofconsulta/Paginas/frm_consulta_execucao.aspx)
-    ou via solicitação a este autor. Os demais arquivos são referente a
-    geração dessa documentação e não são pertinentes a execução das
-    análises do projeto.
+[1] É importante ressaltar ambas rotinas foram geradas usando a
+interface [Spyder](https://www.spyder-ide.org/) que possui um
+*spyproject* associado que facilita a execução e leitura dos arquivos
+contidos em planilha. Em razão do tamanho dessas planilhas, tais dados
+não estão disponibilizados neste repositório. Contudo, podem ser
+acessados na página do
+[SIOF](https://planejamento.seplag.ce.gov.br/siofconsulta/Paginas/frm_consulta_execucao.aspx)
+ou via solicitação a este autor. Os demais arquivos são referente a
+geração dessa documentação e não são pertinentes a execução das análises
+do projeto.
 
-[^2]: Obviamente, para o mês de janeiro não é necessário realizar nenhum
-    tipo de transformação
+[2] Obviamente, para o mês de janeiro não é necessário realizar nenhum
+tipo de transformação

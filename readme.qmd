@@ -1,5 +1,6 @@
 ---
 title: "Processamento dos dados de Investimentos Públicos no Estado do Ceará"
+author: Paulo Icaro
 format:
     gfm: default
     pdf:
