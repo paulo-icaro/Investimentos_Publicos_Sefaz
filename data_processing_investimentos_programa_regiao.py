@@ -161,7 +161,7 @@ if info_desired == 'p':
 elif info_desired == 'r':
     dataset_full = dataset_full.sort_values(by = ['cod_regiao', 'tipo', 'ano', 'mes']).reset_index(drop = True)
 else:
-    dataset_full = dataset_full.sort_values(by = ['tipo', 'regiao', 'cod_programa','ano', 'mes']).reset_index(drop = True)
+    dataset_full = dataset_full.sort_values(by = ['tipo', 'cod_regiao', 'cod_programa','ano', 'mes']).reset_index(drop = True)
 
 
 # --- Cumulative data adjustment --- #
@@ -203,13 +203,13 @@ if info_desired == 'p':
         dataset_full.to_excel(excel_writer = writer, sheet_name = 'investimentos_programa', index = False)
 
         # Just Formatting the Excel Sheet (not needed in case of vertical adjustment)
-        '''workbook = writer.book
+        workbook = writer.book
         worksheet = writer.sheets['investimentos_programa']
         money_formatting = workbook.add_format({'num_format':'R$#,##0'})
-        perc_formatting = workbook.add_format({'num_format':'0.0%'})
-        worksheet.set_column('G:J', 15, money_formatting)
-        worksheet.set_column('K:L', 15, perc_formatting)
-        worksheet.set_column('A:F', 15)'''
+        #perc_formatting = workbook.add_format({'num_format':'0.0%'})
+        worksheet.set_column('H:H', 15, money_formatting)
+        #worksheet.set_column('K:L', 15, perc_formatting)
+        #worksheet.set_column('A:F', 15)
     
     # Full Cleasing
     del(dataset, folder_files, i, info_desired, writer, x, new, old, replacements, program_flag)#, money_formatting, perc_formatting, workbook, worksheet)
@@ -229,13 +229,13 @@ elif info_desired == 'r':
         dataset_full.to_excel(excel_writer = writer, sheet_name = 'investimentos_regiao', index = False)
 
         # Just Formatting the Excel Sheet (not needed in case of vertical adjustment)
-        '''workbook = writer.book
+        workbook = writer.book
         worksheet = writer.sheets['investimentos_regiao']
         money_formatting = workbook.add_format({'num_format':'R$#,##0'})
-        perc_formatting = workbook.add_format({'num_format':'0.0%'})
-        worksheet.set_column('G:J', 15, money_formatting)
-        worksheet.set_column('K:L', 15, perc_formatting)
-        worksheet.set_column('A:F', 15)'''
+        #perc_formatting = workbook.add_format({'num_format':'0.0%'})
+        worksheet.set_column('H:H', 15, money_formatting)
+        #worksheet.set_column('K:L', 15, perc_formatting)
+        #worksheet.set_column('A:F', 15)
     
     # --- Full Cleasing --- #
     del(dataset, folder_files, i, info_desired, writer, x, new, old, replacements, region_flag)#, money_formatting, perc_formatting, workbook, worksheet)
@@ -252,18 +252,18 @@ else:
         )
     
     
-    
-    with pd.ExcelWriter(path = 'investimentos_siof_ceara_programa_regiao.xlsx', engine='xlsxwriter') as writer:
+    # --- Storing --- #
+    with pd.ExcelWriter(path = 'investimentos_siof_ceara_programa_regiao_teste.xlsx', engine='xlsxwriter') as writer:
         dataset_full.to_excel(excel_writer = writer, sheet_name = 'investimentos_programa_regiao', index = False)
 
         # Just Formatting the Excel Sheet (not needed in case of vertical adjustment)
-        '''workbook = writer.book
+        workbook = writer.book
         worksheet = writer.sheets['investimentos_programa_regiao']
         money_formatting = workbook.add_format({'num_format':'R$#,##0'})
-        perc_formatting = workbook.add_format({'num_format':'0.0%'})
-        worksheet.set_column('I:L', 15, money_formatting)
-        worksheet.set_column('M:N', 15, perc_formatting)
-        worksheet.set_column('A:F', 15)'''
+        #perc_formatting = workbook.add_format({'num_format':'0.0%'})
+        worksheet.set_column('J:J', 15, money_formatting)
+        #worksheet.set_column('M:N', 15, perc_formatting)
+        #worksheet.set_column('A:F', 15)
     
     # --- Full Cleasing --- #
     del(dataset, folder_files, i, info_desired, writer, x, new, old, replacements, program_flag)#, money_formatting, perc_formatting, workbook, worksheet)

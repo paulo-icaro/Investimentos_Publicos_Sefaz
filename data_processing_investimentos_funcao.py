@@ -100,17 +100,17 @@ dataset_full = dataset_full.melt(
     )
 
 # --- Storing --- #
-with pd.ExcelWriter(path = 'investimentos_siof_ceara_funcao.xlsx', engine = 'xlsxwriter') as writer:
+with pd.ExcelWriter(path = 'investimentos_siof_ceara_funcao_teste.xlsx', engine = 'xlsxwriter') as writer:
     dataset_full.to_excel(excel_writer = writer, sheet_name = 'investimentos_funcao', index = False)
     
     # Quick Formatting
     workbook = writer.book
     worksheet = writer.sheets['investimentos_funcao']
     money_formatting = workbook.add_format({'num_format':'R$#,##0'})
-    perc_formatting = workbook.add_format({'num_format':'0.0%'})
-    worksheet.set_column('G:J', 15, money_formatting)    
-    worksheet.set_column('K:L', 15, perc_formatting)
+    #perc_formatting = workbook.add_format({'num_format':'0.0%'})
+    worksheet.set_column('H:H', 15, money_formatting)    
+    #worksheet.set_column('K:L', 15, perc_formatting)
 
 
 # --- Full Cleasing --- #
-del(dataset, folder_files, money_formatting, perc_formatting, workbook, worksheet, writer, x)
+del(dataset, folder_files, money_formatting, workbook, worksheet, writer, x)
