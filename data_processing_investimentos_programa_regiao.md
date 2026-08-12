@@ -435,13 +435,10 @@ if info_desired == 'p':
         workbook = writer.book
         worksheet = writer.sheets['investimentos_programa']
         money_formatting = workbook.add_format({'num_format':'R$#,##0'})
-        perc_formatting = workbook.add_format({'num_format':'0.0%'})
         worksheet.set_column('H:H', 15, money_formatting)
-        #worksheet.set_column('K:L', 15, perc_formatting)
-        #worksheet.set_column('A:F', 15)
     
     # --- Limpeza --- #
-    del(dataset, folder_files, i, info_desired, writer, x, new, old, replacements, program_flag)#, money_formatting, perc_formatting, workbook, worksheet)
+    del(dataset, folder_files, i, info_desired, writer, x, new, old, replacements, program_flag, workbook, worksheet, money_formatting))
     
 elif info_desired == 'r':       
     
@@ -461,13 +458,10 @@ elif info_desired == 'r':
         workbook = writer.book
         worksheet = writer.sheets['investimentos_regiao']
         money_formatting = workbook.add_format({'num_format':'R$#,##0'})
-        perc_formatting = workbook.add_format({'num_format':'0.0%'})
         worksheet.set_column('H:H', 15, money_formatting)
-        #worksheet.set_column('K:L', 15, perc_formatting)
-        #worksheet.set_column('A:F', 15)
     
     # --- Limpeza --- #
-    del(dataset, folder_files, i, info_desired, writer, x, new, old, replacements, region_flag)#, money_formatting, perc_formatting, workbook, worksheet)
+    del(dataset, folder_files, i, info_desired, writer, x, new, old, replacements, region_flag, workbook, worksheet, money_formatting)
 
 
 else:
@@ -490,12 +484,10 @@ else:
         worksheet = writer.sheets['investimentos_programa_regiao']
         money_formatting = workbook.add_format({'num_format':'R$#,##0'})
         perc_formatting = workbook.add_format({'num_format':'0.0%'})
-        worksheet.set_column('H:H', 15, money_formatting)
-        #worksheet.set_column('K:L', 15, perc_formatting)
-        #worksheet.set_column('A:F', 15)
+        worksheet.set_column('J:J', 15, money_formatting)
     
     # --- Limpeza --- #
-    del(dataset, folder_files, i, info_desired, writer, x, new, old, replacements, program_flag)
+    del(dataset, folder_files, i, info_desired, writer, x, new, old, replacements, program_flag, workbook, worksheet, money_formatting)
 ```
 
 [^1]: É válido mencionar que o usuário deve preencher corretamente a

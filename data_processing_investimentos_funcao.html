@@ -398,13 +398,11 @@ invest_t = invest\_acum_t - invest\_acum_t-1    \qquad(t \neq 1)
 <span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    workbook <span class="op">=</span> writer.book</span>
 <span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    worksheet <span class="op">=</span> writer.sheets[<span class="st">'investimentos_funcao'</span>]</span>
 <span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    money_formatting <span class="op">=</span> workbook.add_format({<span class="st">'num_format'</span>:<span class="st">'R$#,##0'</span>})</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    <span class="co">#perc_formatting = workbook.add_format({'num_format':'0.0%'})</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>    worksheet.set_column(<span class="st">'H:H'</span>, <span class="dv">15</span>, money_formatting)    </span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    <span class="co">#worksheet.set_column('K:L', 15, perc_formatting)</span></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Limpeza --- #</span></span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="kw">del</span>(dataset, folder_files, money_formatting, perc_formatting, workbook, worksheet, writer, x)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>    worksheet.set_column(<span class="st">'H:H'</span>, <span class="dv">15</span>, money_formatting)    </span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Limpeza --- #</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a><span class="kw">del</span>(dataset, folder_files, money_formatting, money_formatting, workbook, worksheet, writer, x)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 

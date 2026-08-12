@@ -335,13 +335,11 @@ with pd.ExcelWriter(path = 'investimentos_siof_ceara_funcao.xlsx', engine = 'xls
     workbook = writer.book
     worksheet = writer.sheets['investimentos_funcao']
     money_formatting = workbook.add_format({'num_format':'R$#,##0'})
-    #perc_formatting = workbook.add_format({'num_format':'0.0%'})
     worksheet.set_column('H:H', 15, money_formatting)    
-    #worksheet.set_column('K:L', 15, perc_formatting)
 
 
 # --- Limpeza --- #
-del(dataset, folder_files, money_formatting, perc_formatting, workbook, worksheet, writer, x)
+del(dataset, folder_files, money_formatting, money_formatting, workbook, worksheet, writer, x)
 ```
 
 [^1]: Tal fato só é possível devido a padronização adotada para o nome
