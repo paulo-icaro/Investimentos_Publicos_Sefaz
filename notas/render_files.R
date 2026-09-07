@@ -14,7 +14,7 @@ library(quarto)
 # -------------------- #
 # --- Renderização --- #
 # -------------------- #
-files = c('data_processing_investimentos_funcao.qmd', 'data_processing_investimentos_programa_regiao.qmd')
+files = c('notas/data_processing_investimentos_funcao.qmd', 'notas/data_processing_investimentos_programa_regiao.qmd')
 formats = c('pdf', 'gfm', 'html')
 
 for (i in seq_along(files)){
