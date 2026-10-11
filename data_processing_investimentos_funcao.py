@@ -14,7 +14,7 @@ import os
 # ===================== #
 # === Dataset Files === #
 # ===================== #
-folder_files = os.listdir('Dataset/Investimentos_Funcao/')
+folder_files = os.listdir('Database/Inputs/Investimentos_Funcao/')
 dataset_full = pd.DataFrame()
 
 
@@ -22,7 +22,7 @@ dataset_full = pd.DataFrame()
 # === Data Processing === #
 # ======================= #
 for x in range(len(folder_files)):
-    dataset = pd.read_excel(io = 'Dataset/Investimentos_Funcao/' + folder_files[x],
+    dataset = pd.read_excel(io = 'Database/Inputs/Investimentos_Funcao/' + folder_files[x],
                             header = 10,
                             usecols= 'C, F, K, N',
                             dtype = {'Código':str})
@@ -100,7 +100,7 @@ dataset_full = dataset_full.melt(
     )
 
 # --- Storing --- #
-with pd.ExcelWriter(path = 'investimentos_siof_ceara_funcao_teste.xlsx', engine = 'xlsxwriter') as writer:
+with pd.ExcelWriter(path = 'Database/Outputs/investimentos_siof_ceara_funcao.xlsx', engine = 'xlsxwriter') as writer:
     dataset_full.to_excel(excel_writer = writer, sheet_name = 'investimentos_funcao', index = False)
     
     # Quick Formatting
