@@ -1,5 +1,5 @@
 ---
-title: "Processamento de Dados - Investimentos Públicos por Programa e Região (Sefaz-CE)"
+title: "Processamento de Dados - Investimentos Públicos por Programa e Região  (Asset - Sefaz CE)"
 author: Paulo Icaro
 format:
   gfm: default
@@ -17,6 +17,9 @@ format:
           boxrule=0.8pt}
   html:
     css: stylesheet.css
+
+date: "2026-11-09"
+editor: source
 ---
 
 
@@ -53,8 +56,10 @@ format:
 </p>
 ```{python}
 #| label: Bibliotecas e Arquivos - Parte 1
-#| echo: True
-#| eval: True
+#| echo: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| eval: TRUE
 
 # =================== #
 # === Bibliotecas === #
@@ -66,8 +71,10 @@ import os
 
 ```{python}
 #| label: Bibliotecas e Arquivos - Parte 2
-#| echo: True
-#| eval: False
+#| echo: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| eval: FALSE
 
 # ========================================= #
 # === Definindo o tipo de dado desejado === #
@@ -95,14 +102,16 @@ Um *dataframe*, **dataset_full**, será gerado e irá armazenar todo o conjunto 
 
 ```{python}
 #| label: Bibliotecas e Arquivos - Parte 3
-#| echo: True
-#| eval: True
+#| echo: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| eval: TRUE
 
 
 # ========================== #
 # ===  Arquivos de Dados === #
 # ========================== #
-folder_files = os.listdir('Dataset/Investimentos_Programa_Regiao/')
+folder_files = os.listdir('/home/pauloicaro/Documentos/Repositorios/Investimentos_Publicos_Sefaz/Database/Investimentos_Programa_Regiao/')
 dataset_full = pd.DataFrame()
 
 # --- Prints --- #
@@ -134,22 +143,26 @@ print(*folder_files[0:10], sep = '\n')
 
 ```{python}
 #| label: Processamento de Dados - Parte 1
-#| echo: False
-#| eval: True
+#| echo: FALSE
+#| warning: FALSE
+#| message: FALSE
+#| eval: TRUE
 info_desired = 'rp'
 ```
 
 ```{python}
 #| label: Processamento de Dados - Parte 2
-#| echo: True
-#| eval: True
+#| echo: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| eval: TRUE
 
 # ============================== #
 # === Processamento de Dados === #
 # ============================== #
 for x in range(len(folder_files)):  
     
-    dataset = pd.read_excel(io = 'Dataset/Investimentos_Programa_Regiao/' + folder_files[x],
+    dataset = pd.read_excel(io = '/home/pauloicaro/Documentos/Repositorios/Investimentos_Publicos_Sefaz/Database/Investimentos_Programa_Regiao/' + folder_files[x],
                           header = 10,
                           usecols= 'C, F, K, N',
                           names = ['codigo', 'descricao', 'empenhado', 'pago'],
@@ -286,8 +299,10 @@ No **dataset_full** duas novas colunas representando o investimento mensal, **em
 
 ```{python}
 #| label: Dados Cumulativos
-#| echo: True
-#| eval: True
+#| echo: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| eval: TRUE
 
 # ======================================= #
 # === Ajustes para Dados Cumulativos  === #
@@ -335,8 +350,10 @@ print(dataset_full.loc[:, ~dataset_full.columns.isin(['regiao', 'programa'])].he
 
 ```{python}
 #| label: Armazenamento dos Resultados
-#| echo: True
-#| eval: False
+#| echo: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| eval: FALSE
 
 # ==================================== #
 # === Armazenamento dos Resultados === #

@@ -14,8 +14,8 @@ library(quarto)
 # -------------------- #
 # --- Renderização --- #
 # -------------------- #
-files = c('notas/data_processing_investimentos_funcao.qmd', 'notas/data_processing_investimentos_programa_regiao.qmd')
-formats = c('pdf', 'gfm', 'html')
+files = c('/home/pauloicaro/Documentos/Repositorios/Investimentos_Publicos_Sefaz/notas/data_processing_investimentos_funcao.qmd', '/home/pauloicaro/Documentos/Repositorios/Investimentos_Publicos_Sefaz/notas/data_processing_investimentos_programa_regiao.qmd')
+formats = c('pdf', 'gfm')
 
 for (i in seq_along(files)){
   for (j in seq_along(formats)){

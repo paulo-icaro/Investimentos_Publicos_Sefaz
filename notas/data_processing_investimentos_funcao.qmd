@@ -1,5 +1,5 @@
 ---
-title: "Processamento de Dados - Investimentos Públicos por Função (Sefaz-CE)"
+title: "Processamento de Dados - Investimentos Públicos por Função (Asset - Sefaz CE)"
 author: Paulo Icaro
 format:
   gfm: default
@@ -18,6 +18,9 @@ format:
           boxrule=0.8pt}
   html:
     css: stylesheet.css
+
+date: "2026-11-09"
+editor: source
 ---
 
 
@@ -54,8 +57,10 @@ format:
 
 ```{python}
 #| label: Bibliotecas e Arquivos
-#| echo: True
-#| eval: True
+#| echo: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| eval: TRUE
 
 # =================== #
 # === Bibliotecas === #
@@ -67,11 +72,11 @@ import os
 # ========================= #
 # === Arquivos de Dados === #
 # ========================= #
-folder_files = os.listdir('Dataset/Investimentos_Funcao/')
+folder_files = os.listdir('/home/pauloicaro/Documentos/Repositorios/Investimentos_Publicos_Sefaz/Database/Investimentos_Funcao/')
 dataset_full = pd.DataFrame()
 
 # --- Prints --- #
-print(*folder_files[0:10], sep = '\n')
+print(folder_files[0:10], sep = '\n')
 ```
 
 
@@ -86,8 +91,10 @@ print(*folder_files[0:10], sep = '\n')
 
 ```{python}
 #| label: Processamento de Dados
-#| echo: True
-#| eval: True
+#| echo: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| eval: TRUE
 
 
 # ============================== #
@@ -96,7 +103,7 @@ print(*folder_files[0:10], sep = '\n')
 for x in range(len(folder_files)):
     
     # --- Leitura de arquivos --- #
-    dataset = pd.read_excel(io = 'Dataset/Investimentos_Funcao/' + folder_files[x],
+    dataset = pd.read_excel(io = '/home/pauloicaro/Documentos/Repositorios/Investimentos_Publicos_Sefaz/Database/Investimentos_Funcao/' + folder_files[x],
                             header = 10,
                             usecols= 'C, F, K, N',
                             dtype = {'Código':str})
@@ -163,8 +170,10 @@ No **dataset_full** duas novas colunas representando o investimento mensal, **em
 
 ```{python}
 #| label: Dados Cumulativos
-#| echo: True
-#| eval: True
+#| echo: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| eval: TRUE
 
 # ======================================= #
 # === Ajustes para Dados Cumulativos  === #
@@ -202,8 +211,10 @@ print(dataset_full.head(10))
 
 ```{python}
 #| label: Armazenamento dos Resultados - Parte 1
-#| echo: True
-#| eval: True
+#| echo: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| eval: TRUE
 
 # ==================================== #
 # === Armazenamento dos Resultados === #
@@ -222,8 +233,10 @@ print(dataset_full.head(10))
 
 ```{python}
 #| label: Armazenamento dos Resultados - Parte 2
-#| echo: True
-#| eval: False
+#| echo: TRUE
+#| warning: FALSE
+#| message: FALSE
+#| eval: FALSE
 
 # --- Armazenando --- #
 with pd.ExcelWriter(path = 'investimentos_siof_ceara_funcao.xlsx', engine = 'xlsxwriter') as writer:

@@ -1,5 +1,6 @@
-# Processamento de Dados - Investimentos Públicos por Função (Sefaz-CE)
+# Processamento de Dados - Investimentos Públicos por Função (Asset - Sefaz CE)
 Paulo Icaro
+2026-11-09
 
 ## Objetivo e Estrutura dos Dados
 
@@ -23,7 +24,7 @@ planilha contém oito campos. Destes, as colunas interesse são:
 
       No campo Código, os investimentos estão classificados em Função,
 Subfunção, Programa e Projeto/Atividade. Para fins da pesquisa, apenas a
-primeira classificação interessa.  
+primeira classificação interessa.\
       Levando em conta os pontos mencionados e que os dados são
 cumulativos, o objetivo dessa rotina é coletar as informações referente
 a Função considerando somente os valores de investimentos Empenhado e
@@ -62,23 +63,14 @@ import os
 # ========================= #
 # === Arquivos de Dados === #
 # ========================= #
-folder_files = os.listdir('Dataset/Investimentos_Funcao/')
+folder_files = os.listdir('/home/pauloicaro/Documentos/Repositorios/Investimentos_Publicos_Sefaz/Database/Investimentos_Funcao/')
 dataset_full = pd.DataFrame()
 
 # --- Prints --- #
-print(*folder_files[0:10], sep = '\n')
+print(folder_files[0:10], sep = '\n')
 ```
 
-    F_JAN_2016_PESSO.XLS
-    F_MAI_2018_CORRE.XLS
-    F_ABR_2023_CORRE.XLS
-    F_JUL_2020_CORRE.XLS
-    F_FEV_2015_CORRE.XLS
-    F_DEZ_2023_TOTAL.XLS
-    F_FEV_2022_TOTAL.XLS
-    F_NOV_2025_EQUIP.XLS
-    F_AGO_2022_OBRAS.XLS
-    F_NOV_2018_TOTAL.XLS
+    ['F_MAR_2015_EQUIP.XLS', 'F_MAI_2020_CORRE.XLS', 'F_SET_2017_CORRE.XLS', 'F_OUT_2025_TOTAL.XLS', 'F_JAN_2022_OBRAS.XLS', 'F_DEZ_2025_PESSO.XLS', 'F_ABR_2020_CORRE.XLS', 'F_AGO_2017_TOTAL.XLS', 'F_JAN_2019_PESSO.XLS', 'F_NOV_2020_PESSO.XLS']
 
 ## Processamento de Dados
 
@@ -86,15 +78,15 @@ print(*folder_files[0:10], sep = '\n')
 
       Nesta etapa, uma estrutura *loop* é utilizada realizar a
 manipulação da rotina, onde cada etapa do tratamento é executado em cada
-conjunto de informações contidos nas planilhas.  
+conjunto de informações contidos nas planilhas.\
       Na leitura dos arquivos, somente as colunas de interesse são
 coletadas. Além disso, toda e qualquer linha nula é removida desse
 conjunto. Esse conjunto de dados remodelado recebe o nome de
-**dataset**.  
+**dataset**.\
       Ao **dataset** são acrescidos quatro novos campos representando,
 respectivamente, i) periodo, ii) tipo de investimento, iii) ano, e iv)
 mês. Tais informações são extraídas justamente do nome de cada arquivo
-processado[^1].  
+processado[^1].\
       Após esses tratamentos iniciais, algumas linhas de comando são
 responsáveis por duas partes cruciais do procedimento. Primeiramente,
 são identificas e filtradas somentes as linhas referente a cujo código
@@ -113,7 +105,7 @@ ano, mês e tipo de investimento e função**.
 for x in range(len(folder_files)):
     
     # --- Leitura de arquivos --- #
-    dataset = pd.read_excel(io = 'Dataset/Investimentos_Funcao/' + folder_files[x],
+    dataset = pd.read_excel(io = '/home/pauloicaro/Documentos/Repositorios/Investimentos_Publicos_Sefaz/Database/Investimentos_Funcao/' + folder_files[x],
                             header = 10,
                             usecols= 'C, F, K, N',
                             dtype = {'Código':str})
@@ -150,29 +142,29 @@ for x in range(len(folder_files)):
 print(dataset_full.head(10))
 ```
 
-           periodo   ano mes   tipo codigo                      funcao  \
-    0     2016/JAN  2016  01  PESSO     04  PESSOAL E ENCARGOS SOCIAIS   
-    0     2018/MAI  2018  05  CORRE     01                 LEGISLATIVA   
-    61    2018/MAI  2018  05  CORRE     02                  JUDICIÁRIA   
-    135   2018/MAI  2018  05  CORRE     03         ESSENCIAL À JUSTIÇA   
-    238   2018/MAI  2018  05  CORRE     04               ADMINISTRAÇÃO   
-    556   2018/MAI  2018  05  CORRE     06           SEGURANÇA PÚBLICA   
-    865   2018/MAI  2018  05  CORRE     08          ASSISTÊNCIA SOCIAL   
-    1015  2018/MAI  2018  05  CORRE     09          PREVIDÊNCIA SOCIAL   
-    1124  2018/MAI  2018  05  CORRE     10                       SAÚDE   
-    1519  2018/MAI  2018  05  CORRE     11                    TRABALHO   
+          periodo   ano mes   tipo codigo               funcao   empenhado  \
+    0    2015/MAR  2015  03  EQUIP     01          LEGISLATIVA   189563.00   
+    33   2015/MAR  2015  03  EQUIP     02           JUDICIÁRIA    82520.42   
+    62   2015/MAR  2015  03  EQUIP     03  ESSENCIAL À JUSTIÇA   254606.86   
+    112  2015/MAR  2015  03  EQUIP     04        ADMINISTRAÇÃO  5125152.87   
+    271  2015/MAR  2015  03  EQUIP     06    SEGURANÇA PÚBLICA  5850079.50   
+    528  2015/MAR  2015  03  EQUIP     08   ASSISTÊNCIA SOCIAL   104183.34   
+    585  2015/MAR  2015  03  EQUIP     10                SAÚDE  5275086.48   
+    710  2015/MAR  2015  03  EQUIP     11             TRABALHO        0.00   
+    737  2015/MAR  2015  03  EQUIP     12             EDUCAÇÃO  1712073.02   
+    871  2015/MAR  2015  03  EQUIP     13              CULTURA     6830.46   
 
-             empenhado          pago  
-    0     7.130100e+08  7.063338e+08  
-    0     2.260264e+08  2.140815e+08  
-    61    4.248100e+08  4.128724e+08  
-    135   1.723213e+08  1.678611e+08  
-    238   3.674781e+08  3.499799e+08  
-    556   8.496340e+08  8.186370e+08  
-    865   7.591048e+07  7.330846e+07  
-    1015  1.271395e+09  1.271218e+09  
-    1124  1.212032e+09  1.081297e+09  
-    1519  1.634733e+07  1.576241e+07  
+               pago  
+    0      29663.00  
+    33       620.00  
+    62         0.00  
+    112  1294469.66  
+    271   107157.03  
+    528        0.00  
+    585    33905.37  
+    710        0.00  
+    737     1700.00  
+    871        0.00  
 
 ## Ajuste para Dados Cumulativos
 
@@ -185,7 +177,9 @@ regra:
 
 </p>
 
-$$invest_t = invest\_acum_t - invest\_acum_t-1    \qquad(t \neq 1)$$
+$$
+invest_t = invest\_acum_t - invest\_acum_t-1    \qquad(t \neq 1)
+$$
 
 <p>
 
@@ -276,14 +270,14 @@ print(dataset_full.head(10))
 
       Após todo o tratamento aplicado aos dados, a base final,
 **dataset_full**, recebe um último tratamento antes dos dados serem
-finalmente armazenados em um arquivo excel (.xlsx).  
+finalmente armazenados em um arquivo excel (.xlsx).\
       **A base de dados final que até então continha 10 colunas passa
 por uma espécie de “verticalização”[^2] das informações**. As colunas de
 valores agora são dividídas em duas colunas. Enquanto os valores em si
 se alinham sob uma única coluna nomeada **valor**, uma coluna nomeada
 **categoria** é gerada para representar a categoria de investimento que
 está sendo tratada. Os campos período, ano, mês, tipo, código e função
-permanecem como variáveis categóricas.  
+permanecem como variáveis categóricas.\
       Ao final da rotina é realizada uma limpeza no *enviroment*
 mantendo somente o dataframe final para visualização.
 

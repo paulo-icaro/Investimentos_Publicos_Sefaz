@@ -1,5 +1,6 @@
-# Processamento de Dados - Investimentos Públicos por Programa e Região (Sefaz-CE)
+# Processamento de Dados - Investimentos Públicos por Programa e Região (Asset - Sefaz CE)
 Paulo Icaro
+2026-11-09
 
 ## Objetivo e Estrutura dos Dados
 
@@ -26,7 +27,7 @@ colunas interesse são:
 
       No campo Código, os investimentos estão classificados em Programa
 e Região. Assim cabe ao pesquisador definir como ele deseja o resultado
-final: apenas Programa, apenas Região ou ambos.  
+final: apenas Programa, apenas Região ou ambos.\
       Levando em conta os pontos mencionados e que os dados são
 cumulativos, o objetivo dessa rotina é coletar as informações referentes
 Programa e/ou Região considerando somente os valores de investimentos
@@ -93,23 +94,23 @@ conjunto de dados final.
 # ========================== #
 # ===  Arquivos de Dados === #
 # ========================== #
-folder_files = os.listdir('Dataset/Investimentos_Programa_Regiao/')
+folder_files = os.listdir('/home/pauloicaro/Documentos/Repositorios/Investimentos_Publicos_Sefaz/Database/Investimentos_Programa_Regiao/')
 dataset_full = pd.DataFrame()
 
 # --- Prints --- #
 print(*folder_files[0:10], sep = '\n')
 ```
 
-    MAI_2024_EQUIP.xlsx
-    OUT_2022_EQUIP.xlsx
-    FEV_2015_OBRAS.XLS
-    JAN_2025_EQUIP.XLS
-    AGO_2021_TOTAL.xlsx
-    MAR_2018_EQUIP.xlsx
-    DEZ_2015_EQUIP.XLS
-    MAI_2017_EQUIP.xlsx
-    FEV_2021_TOTAL.xlsx
-    JUL_2022_TOTAL.xlsx
+    MAI_2022_TOTAL.xlsx
+    OUT_2013_EQUIP.XLS
+    JUL_2020_EQUIP.xlsx
+    OUT_2012_EQUIP.XLS
+    OUT_2020_EQUIP.xlsx
+    JUL_2016_TOTAL.xlsx
+    MAR_2019_TOTAL.xlsx
+    ABR_2023_OBRAS.xlsx
+    AGO_2018_OBRAS.xlsx
+    AGO_2012_OBRAS.XLS
 
 ## Processamento de Dados
 
@@ -117,17 +118,17 @@ print(*folder_files[0:10], sep = '\n')
 
       Nesta etapa, uma estrutura *loop* é utilizada realizar a
 manipulação da rotina, onde cada etapa do tratamento é executado em cada
-conjunto de informações contidos nas planilhas.  
+conjunto de informações contidos nas planilhas.\
       Na leitura dos arquivos, somente as colunas de interesse são
 coletadas. Além disso, toda e qualquer linha nula é removida desse
 conjunto. Esse conjunto de dados remodelado recebe o nome de
-**dataset**.  
+**dataset**.\
       Ao **dataset** são acrescidos quatro novos campos representando,
 respectivamente, i) periodo, ii) tipo de investimento, iii) ano, e iv)
 mês. Tais informações são extraídas justamente do nome de cada arquivo
 processado[^2]. Esse procedimento se replica nos três casos possíveis,
 porém a uma pequena modificação é feita no cenário programa/região: os
-campos **cod_programa** e **programa** também são incluídos.  
+campos **cod_programa** e **programa** também são incluídos.\
       Após esses tratamentos iniciais, algumas linhas de comando são
 responsáveis por duas partes cruciais do procedimento. Para cada cenário
 um procedimento é adotado:
@@ -168,7 +169,7 @@ todas as informações por ano, mês e tipo de investimento e função**.
 # ============================== #
 for x in range(len(folder_files)):  
     
-    dataset = pd.read_excel(io = 'Dataset/Investimentos_Programa_Regiao/' + folder_files[x],
+    dataset = pd.read_excel(io = '/home/pauloicaro/Documentos/Repositorios/Investimentos_Publicos_Sefaz/Database/Investimentos_Programa_Regiao/' + folder_files[x],
                           header = 10,
                           usecols= 'C, F, K, N',
                           names = ['codigo', 'descricao', 'empenhado', 'pago'],
@@ -275,17 +276,17 @@ for x in range(len(folder_files)):
 print(dataset_full.loc[:, ~dataset_full.columns.isin(['regiao', 'programa'])].head(10))
 ```
 
-         periodo   ano mes   tipo cod_regiao cod_programa  empenhado  pago
-    2   MAI_2024  2024  05  EQUIP         03          101        0.0   0.0
-    3   MAI_2024  2024  05  EQUIP         15          101        0.0   0.0
-    6   MAI_2024  2024  05  EQUIP         15          102        0.0   0.0
-    8   MAI_2024  2024  05  EQUIP         01          112        0.0   0.0
-    9   MAI_2024  2024  05  EQUIP         02          112        0.0   0.0
-    10  MAI_2024  2024  05  EQUIP         03          112        0.0   0.0
-    11  MAI_2024  2024  05  EQUIP         04          112        0.0   0.0
-    12  MAI_2024  2024  05  EQUIP         05          112        0.0   0.0
-    13  MAI_2024  2024  05  EQUIP         06          112        0.0   0.0
-    14  MAI_2024  2024  05  EQUIP         07          112        0.0   0.0
+         periodo   ano mes   tipo cod_regiao cod_programa   empenhado        pago
+    1   MAI_2022  2022  05  TOTAL         01          111        0.00        0.00
+    2   MAI_2022  2022  05  TOTAL         03          111  1539916.25  1353393.42
+    3   MAI_2022  2022  05  TOTAL         06          111        0.00        0.00
+    4   MAI_2022  2022  05  TOTAL         11          111   974400.00   974400.00
+    5   MAI_2022  2022  05  TOTAL         15          111        0.00        0.00
+    7   MAI_2022  2022  05  TOTAL         01          112        0.00        0.00
+    8   MAI_2022  2022  05  TOTAL         02          112        0.00        0.00
+    9   MAI_2022  2022  05  TOTAL         03          112    91265.00        0.00
+    10  MAI_2022  2022  05  TOTAL         04          112        0.00        0.00
+    11  MAI_2022  2022  05  TOTAL         05          112        0.00        0.00
 
 ## Ajustes para Dados Cumulativos
 
@@ -298,7 +299,9 @@ regra:
 
 </p>
 
-$$invest_t = invest\_acum_t - invest\_acum_t-1    \qquad(t \neq 1)$$
+$$
+invest_t = invest\_acum_t - invest\_acum_t-1    \qquad(t \neq 1)
+$$
 
 <p>
 
@@ -401,7 +404,7 @@ print(dataset_full.loc[:, ~dataset_full.columns.isin(['regiao', 'programa'])].he
 
       Após todo o tratamento aplicado aos dados, a base final,
 **dataset_full**, recebe um último tratamento antes dos dados serem
-finalmente armazenados em um arquivo excel (.xlsx).  
+finalmente armazenados em um arquivo excel (.xlsx).\
       **A base de dados final passa por uma espécie de
 “verticalização”[^3] das informações**. As colunas de valores agora são
 dividídas em duas colunas. Enquanto os valores em si se alinham sob uma
@@ -409,7 +412,7 @@ dividídas em duas colunas. Enquanto os valores em si se alinham sob uma
 gerada para representar a categoria de investimento que está sendo
 tratada. Os campos período, ano, mês, tipo, código do programa,
 programa, código da região e região permanecem como variáveis
-categóricas.  
+categóricas.\
       Ao final da rotina é realizada uma limpeza no *enviroment*
 mantendo somente o dataframe final para visualização.
 
