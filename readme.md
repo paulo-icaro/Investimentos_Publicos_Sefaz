@@ -1,6 +1,6 @@
-# Processamento dos dados de Investimentos Públicos no Estado do Ceará (Asset - Sefaz CE)
+# Processamento dos Dados de Investimentos Públicos no Estado do Ceará (Asset - Sefaz CE)
 Paulo Icaro
-2026-11-09
+2026-08-19
 
 <!------------->
 

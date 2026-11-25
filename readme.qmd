@@ -1,5 +1,5 @@
 ---
-title: "Processamento dos dados de Investimentos Públicos no Estado do Ceará (Asset - Sefaz CE)"
+title: "Processamento dos Dados de Investimentos Públicos no Estado do Ceará (Asset - Sefaz CE)"
 author: Paulo Icaro
 format:
     gfm: default
