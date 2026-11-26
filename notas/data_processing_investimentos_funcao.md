@@ -1,6 +1,6 @@
 # Processamento de Dados - Investimentos Públicos por Função (Asset - Sefaz CE)
 Paulo Icaro
-2026-11-09
+2026-08-19
 
 ## Objetivo e Estrutura dos Dados
 

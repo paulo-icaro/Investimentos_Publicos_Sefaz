@@ -19,7 +19,7 @@ format:
   html:
     css: stylesheet.css
 
-date: "2026-11-09"
+date: "2026-08-19"
 editor: source
 ---
 
